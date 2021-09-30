@@ -1,0 +1,14 @@
+{% extends "/layouts/base.html" %}
+
+{% block title %}Marcas{% endblock %}
+
+{% block content %}
+
+    <h1>Hello World</h1>
+    <ul>
+        {% for item in lista %}
+            <li class="hover:bg-green-200">{{ item }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
