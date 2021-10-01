@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Config\MySql;
+use Config\Model;
 
-class Marca extends MySql{
+class Marca extends Model{
 
-
+    protected $table = "marca";
 }

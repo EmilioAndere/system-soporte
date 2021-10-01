@@ -41,4 +41,40 @@ class MySql implements IQueryBuilder{
         return $this;
     }
 
+    public function limit(int $start, int $offset): IQueryBuilder
+    {
+        if(!in_array($this->query->type, ['select'])){
+            throw new Exception("LIMIT solo puede ser agregdo a SELECT");
+        }
+        $this->query->limit = " LIMIT ".$start.", ".$offset;
+
+        return $this;
+    }
+
+    public function order(string $field, string $type): IQueryBuilder
+    {
+        return $this;
+    }
+
+    public function getSQL(): string
+    {
+        $query = $this->query;
+        $sql = $this->query->base;
+        if(isset($query->inner)){
+            $sql .= " INNER JOIN ".implode(' INNER JOIN ', $query->inner);
+        }
+        if(!empty($query->where)){
+            $sql .= " WHERE ".implode(' AND ', $query->where);
+        }
+        if(isset($query->limit)){
+            $sql .= $query->limit;
+        }
+        return $sql;
+    }
+
+    public function exec(): string{
+        $sql = $this->getSQL();
+        return "EJECUTANDO: $sql";
+    }
+
 }
