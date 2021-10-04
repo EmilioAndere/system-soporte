@@ -11,6 +11,7 @@ interface IQueryBuilder{
     public function order(string $field, string $type): IQueryBuilder;
 
     public function getSQL(): string;
-    public function exec(): string;
+    public function exec();
+    public function first();
 
 }

@@ -6,5 +6,4 @@ use Config\Model;
 
 class Marca extends Model{
 
-    protected $table = "marca";
 }

@@ -2,6 +2,8 @@
 
 namespace Config;
 
+use Exception;
+
 class Model extends MySql{
 
     protected $data = array();
@@ -27,7 +29,16 @@ class Model extends MySql{
         }
     }
 
-    public function save(){
+    private function getPrimary(){
+        if(isset($this->primary_key)){
+            return $this->primary_key;
+        }else{
+            $field_id = substr($this->getTable(), 0, -2)."_id";
+            return $field_id;
+        }
+    }
+
+    private function getInsert(){
         $table = $this->getTable();
         $query  = "INSERT INTO $table ";
         $fields = "( ";
@@ -42,7 +53,49 @@ class Model extends MySql{
         $fields = substr($fields, 0, -2)." )";
         $values = substr($values, 0, -2)." )";
         $query .= $fields." VALUES ".$values;
-        echo $query;
+        return $query;
     }
+
+    private function getUpdate($id){
+        $table = $this->getTable();
+        $values = "";
+        $query = "UPDATE $table SET ";
+        if(count($this->data) == 0){
+            throw new \Exception("No hay atributos para insertar");
+        }
+        foreach ($this->data as $key => $value) {
+            $values .= $key."='".$value."', ";
+        }
+        $query .= $values;
+        $query = substr($query, 0, -2)." WHERE ".substr($table, 0, -2)."_id = ".$id;
+        return $query;
+    }
+
+    public function save(){
+        $field_id = substr($this->getTable(), 0, -2)."_id";
+        if(isset($this->data[$field_id])){
+            $sql = $this->getUpdate($this->data[$field_id]);
+        }else{
+            $sql = $this->getInsert();
+        }
+        try {
+            $rows = $this->exeIns($sql);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        return $rows;
+    }
+
+    public function delete($id){
+        try {
+            $table = $this->getTable();
+            $field = $this->getPrimary();
+            $query = "DELETE FROM $table WHERE ".$field." = $id";
+            $numRows = $this->exeIns($query);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        return $numRows;
+    } 
 
 }

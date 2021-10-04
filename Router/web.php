@@ -2,7 +2,7 @@
 
 use App\Controllers\MarcaController;
 
-$router->redirect("/", "/marca");
+// $router->redirect("/", "/marca");
 
 $router->get("/marca/:id", [Persona::class, "add"]);
 

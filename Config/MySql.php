@@ -6,7 +6,7 @@ use Config\Interfaces\IQueryBuilder;
 use Exception;
 use stdClass;
 
-class MySql implements IQueryBuilder{
+class MySql extends Connection implements IQueryBuilder{
 
     protected $query;
 
@@ -72,9 +72,19 @@ class MySql implements IQueryBuilder{
         return $sql;
     }
 
-    public function exec(): string{
+    public function exec(){
         $sql = $this->getSQL();
-        return "EJECUTANDO: $sql";
+        $data = $this->getData($sql);
+        return $data;
     }
+
+    public function first()
+    {
+        $sql = $this->getSQL();
+        $data = $this->getSingle($sql);
+        return $data;
+    }
+
+    
 
 }

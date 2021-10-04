@@ -34,7 +34,7 @@ class Router{
     public function redirect($from_path, $to_path, $code = 302){
         $this->all($from_path, function () use ($to_path, $code) {
             http_response_code($code);
-            echo $to_path;
+            // echo $to_path;
             header("Location: {$to_path}");
         });
     }

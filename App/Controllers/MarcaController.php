@@ -9,9 +9,10 @@ class MarcaController extends Controller{
 
     public function new(){
         $marca = new Marca();
-        // $marca->id = 2;
-        $marca->nombre = "Dell";
-        $marca->save();
+        $marca->marca_id = 5;
+        $marca->nombre = "Kiosera";
+        $saludo = $marca->delete(5);
+        echo $saludo;
     }
 
 }
