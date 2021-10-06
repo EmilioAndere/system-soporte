@@ -31,6 +31,15 @@ class Router{
         $this->routes[] = new Matcher($expr, $callback, "POST");
     }
 
+    public function group($expr, $group){
+        foreach ($group as $route) {
+            if($route[0] == "/"){
+                $route[0] = "";
+            }
+            $this->{$route[2]}($expr.$route[0], $route[1]);
+        }
+    }   
+
     public function redirect($from_path, $to_path, $code = 302){
         $this->all($from_path, function () use ($to_path, $code) {
             http_response_code($code);

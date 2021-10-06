@@ -96,6 +96,27 @@ class Model extends MySql{
             return $e->getMessage();
         }
         return $numRows;
-    } 
+    }
+
+    public static function all(){
+        $class = explode("\\", get_called_class());
+        $table = strtolower($class[count($class)-1])."s ";
+        try {
+            $con = new \PDO($_ENV['DB_DNS'], $_ENV['DB_USER'], $_ENV['DB_PASS']);
+        } catch (\PDOException $e) {
+            echo "Fallo la conexion: $e->getMessage()";
+        }
+        $res = $con->query("SELECT * FROM $table");
+        $error = $con->errorInfo();
+
+        if($error[0] === "00000"){
+            $res->execute();
+            $data = $res->fetchAll(\PDO::FETCH_ASSOC);
+            $con = null;
+            return $data;
+        }
+
+        return $error;
+    }
 
 }
