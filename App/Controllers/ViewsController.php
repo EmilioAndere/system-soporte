@@ -11,4 +11,9 @@ class ViewsController extends Controller{
         echo $this->tmp->render('dash.twig', compact('uri'));
     }
 
+    public function devices(){
+        $uri = $this->uri;
+        echo $this->tmp->render('/pages/devices/device.twig', compact('uri'));
+    }
+
 }

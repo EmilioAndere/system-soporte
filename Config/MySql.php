@@ -27,8 +27,35 @@ class MySql extends Connection implements IQueryBuilder{
         if(!in_array($this->query->type, ['select', 'update', 'delete'])){
             throw new Exception("WHERE solo puede ser agregado a SELECT, UPDATE, DELETE");
         }
-        $this->query->where[] = "$field $operator $value";
+        $this->query->where[] = "$field $operator '$value'";
 
+        return $this;
+    }
+
+    public function orWhere(string $field, string $value, string $operator = "="): IQueryBuilder{
+        if(!in_array($this->query->type, ['select', 'update', 'delete'])){
+            throw new Exception("WHERE solo puede ser agregado a SELECT, UPDATE, DELETE");
+        }
+        $this->query->orWhere[] = "$field $operator '$value'";
+
+        return $this;
+    }
+
+    public function isNull(string $field): IQueryBuilder{
+        if(!in_array($this->query->type, ['select'])){
+            throw new Exception("Error Processing Request", 1);
+        }
+
+        $this->query->where[] = "$field IS NULL";
+        return $this;
+    }
+
+    public function isNotNull(string $field): IQueryBuilder {
+        if(!in_array($this->query->type, ['select'])){
+            throw new Exception("Error Processing Request", 1);
+        }
+        $this->query->where[] = "$field IS NOT NULL";
+        
         return $this;
     }
 
@@ -64,7 +91,18 @@ class MySql extends Connection implements IQueryBuilder{
             $sql .= " INNER JOIN ".implode(' INNER JOIN ', $query->inner);
         }
         if(!empty($query->where)){
-            $sql .= " WHERE ".implode(' AND ', $query->where);
+            if(str_contains($sql, 'WHERE')){
+                $sql .= " AND ".implode(' AND ', $query->where);
+            }else{
+                $sql .= " WHERE ".implode(' AND ', $query->where);
+            }
+        }
+        if(!empty($query->orWhere)){
+            if(str_contains($sql, 'WHERE')){
+                $sql .= " OR ".implode(' OR ', $query->orWhere);
+            }else{
+                $sql .= " WHERE ".implode(' OR ', $query->orWhere);
+            }
         }
         if(isset($query->limit)){
             $sql .= $query->limit;

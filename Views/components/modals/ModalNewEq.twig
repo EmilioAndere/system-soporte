@@ -1,0 +1,89 @@
+<div id="new-equipo" class="bg-black bg-opacity-50 z-10 fixed inset-0 hidden">
+    <div class="rounded-lg bg-white mx-auto w-3/4 my-20 p-10">
+        <div class="flex justify-between">
+            <h1 id="name" class="font-semibold text-lg">Equipo: </h1>
+            <button id="btn-edit"><span class="material-icons text-blue-800">&#xe3c9;</span></button>
+        </div>
+        <hr>
+        <form id="form-equipo" class="w-full my-5 overflow-auto">
+            <div class="lg:flex block my-2 w-full">
+                <input type="hidden" id="equipo_id">
+                <input type="hidden" id="empleado_id">
+                <label class="block mx-2 w-full sm:w-1/4">
+                    <span>Nombre de Equipo:</span>
+                    <input type="text" id="device" class="w-full mt-1 block border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                </label>
+                <label class="block mx-2 w-full sm:w-1/4">
+                    <span>Serial:</span>
+                    <input type="text" id="serial" class="w-full mt-1 block border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                </label>
+                <label class="block mx-2 w-full sm:w-1/4">
+                    <span>Direccion IP:</span>
+                    <input type="text" id="ip" class="w-full mt-1 block border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                </label>
+                <label class="block mx-2 w-full sm:w-1/4">
+                    <span>Marca:</span>
+                    <select id="marca" class="w-full mt-1 block border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <option >Select...</option>
+                    </select>
+                </label>
+            </div>
+            <div class="lg:flex sm:block my-2 w-full">
+                <label class="block mx-2 w-full sm:w-1/4">
+                    <span>Disco Duro:</span>
+                    <select id="disco" class="w-full mt-1 block border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <option selected>Select...</option>
+                    </select>
+                </label>
+                <label class="block mx-2 w-full sm:w-1/4">
+                    <span>Memoria RAM:</span>
+                    <select id="ram" class="w-full mt-1 block border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <option selected>Select...</option>
+                    </select>
+                </label>
+                <label class="block mx-2 w-full sm:w-1/4">
+                    <span>Pantalla:</span>
+                    <select id="pantalla" class="w-full mt-1 block border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <option selected>Select...</option>
+                    </select>
+                </label>
+                <label class="block mx-2 w-full sm:w-1/4">
+                    <span>Categoria:</span>
+                    <select id="categoria" class="w-full mt-1 block border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <option selected>Select...</option>
+                    </select>
+                </label>
+            </div>
+            <div class="lg:flex sm:block my-2 w-full">
+                <label class="block mx-2 w-1/4">
+                    <span>Fecha de Compra:</span>
+                    <input type="date" id="compra" class="w-full mt-1 block border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                </label>
+                <label class="block mx-2 w-full sm:w-1/4">
+                    <span>Asignado a:</span>
+                    <input type="text" disabled id="empleado" class="w-full mt-1 block border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                </label>
+                <div class="mt-7">
+                    <button id="detail" class="bg-blue-400 p-2 rounded-md text-white font-bold">Detalles</button>
+                    <button id="accion" class="p-2 rounded-md text-white font-bold"></button>
+                </div>
+            </div>
+        </form>
+        <hr>
+        <div class="flex items-center justify-between">
+            <div>
+                <button id="btn-delete" class="bg-red-500 px-5 py-1 rounded-md mt-5 font-bold text-white mx-2">
+                    <span class="material-icons">&#xe872;</span>
+                </button>
+            </div>
+            <div>
+                <button id="btn-cancel" class="bg-red-400 px-5 py-1 rounded-md mt-5 font-bold text-white mx-2">
+                    <span class="material-icons">&#xE5CD;</span>
+                </button>
+                <button disabled type="submit" id="btn-save" class="bg-yellow-300 px-5 py-1 rounded-md mt-5 font-bold text-white">
+                    <span class="material-icons">&#xE161;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

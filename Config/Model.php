@@ -64,7 +64,11 @@ class Model extends MySql{
             throw new \Exception("No hay atributos para insertar");
         }
         foreach ($this->data as $key => $value) {
-            $values .= $key."='".$value."', ";
+            if($value == 'NULL'){
+                $values .= $key."=".$value.", ";
+            }else{
+                $values .= $key."='".$value."', ";
+            }
         }
         $query .= $values;
         $query = substr($query, 0, -2)." WHERE ".substr($table, 0, -2)."_id = ".$id;
@@ -73,11 +77,13 @@ class Model extends MySql{
 
     public function save(){
         $field_id = substr($this->getTable(), 0, -2)."_id";
-        if(isset($this->data[$field_id])){
+        if(isset($this->data[$field_id]) && $this->data[$field_id] != 0){
             $sql = $this->getUpdate($this->data[$field_id]);
         }else{
             $sql = $this->getInsert();
         }
+        // echo $this->data[$field_id];
+        // echo $sql;
         try {
             $rows = $this->exeIns($sql);
         } catch (Exception $e) {
@@ -98,9 +104,13 @@ class Model extends MySql{
         return $numRows;
     }
 
-    public static function all(){
+    public static function all($plural = true){
         $class = explode("\\", get_called_class());
-        $table = strtolower($class[count($class)-1])."s ";
+        if($plural){
+            $table = strtolower($class[count($class)-1])."s ";
+        }else{
+            $table = strtolower($class[count($class)-1]);
+        }
         try {
             $con = new \PDO($_ENV['DB_DNS'], $_ENV['DB_USER'], $_ENV['DB_PASS']);
         } catch (\PDOException $e) {
