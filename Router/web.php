@@ -12,7 +12,8 @@ use App\Controllers\UbicacionController;
 use App\Controllers\ViewsController;
 
 $router->get("/", [ViewsController::class, "dash"]);
-$router->get("/devices", [ViewsController::class, "devices"]);
+$router->get('/devices', [ViewsController::class, "devices"]);
+$router->get('/services', [ViewsController::class, "services"]);
 $router->get('/stock', [EquipoController::class, 'inStock']);
 
 $router->post('/device', [EquipoController::class, 'add']);

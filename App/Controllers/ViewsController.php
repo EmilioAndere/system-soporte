@@ -13,7 +13,12 @@ class ViewsController extends Controller{
 
     public function devices(){
         $uri = $this->uri;
-        echo $this->tmp->render('/pages/devices/device.twig', compact('uri'));
+        echo $this->tmp->render('/pages/device.twig', compact('uri'));
+    }
+
+    public function services(){
+        $uri = $this->uri;
+        echo $this->tmp->render('/pages/services.twig', compact('uri'));
     }
 
 }

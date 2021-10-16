@@ -1,0 +1,58 @@
+{% extends '/layouts/base.twig' %}
+
+{% block title %}Servicios{% endblock %}
+
+{% block content %}
+    <div class="sticky top-0 bg-white rounded-md p-5">
+        <h2 class="text-lg font-semibold" id="head">Servicio Tecnico</h2>
+    </div>
+
+    <div class="bg-blue-400 my-3 rounded-md font-semibold text-white py-2 px-2">
+        <h2 class="mx-10 mb-5 text-lg">Resumen de Servicios</h2>
+        <div class="flex mb-5">
+            <div class="w-1/4 border-r border-white pl-4">
+                <h4 class="text-xl">Abierto</h4>
+                <span class="text-6xl font-black">0</span>
+            </div>
+            <div class="w-1/4 border-r border-white pl-4">
+                <h4 class="text-xl">En espera</h4>
+                <span class="text-6xl font-black">0</span>
+            </div>
+            <div class="w-1/4 border-r border-white pl-4">
+                <h4 class="text-xl">No Asignados</h4>
+                <span class="text-6xl font-black">0</span>
+            </div>
+            <div class="w-1/4 pl-4 text-orange-400">
+                <h4 class="text-xl">Importantes</h4>
+                <span class="text-6xl font-black">0</span>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <ul>
+            <li class="flex bg-white rounded-md px-4 py-2 shadow-sm items-center hover:bg-bluegray-300 my-3">
+                <img src="./img/ticket.png" class="ring ring-blue-600 ring-offset-2 rounded-full w-16 h-16 mx-2">
+                <div class="mx-4">
+                    <p class="flex justify-between items-center"><span class="font-bold"><a href="#">Ticket #001</a></span><span class="text-sm text-blue-400 uppercase"><b>by. </b>Emilio Andere López</span></p>
+                    <p class="line-clamp-1 italic">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Assumenda ipsam doloremque dicta perspiciatis? Repellat maiores ab doloremque nesciunt animi reprehenderit delectus. Ad fugit molestias quis praesentium tenetur illo, architecto provident reiciendis molestiae? Aspernatur velit sequi, quod ipsum hic fugiat, facilis et minima recusandae nesciunt magni possimus accusamus maiores expedita? Asperiores.</p>
+                    <span class="text-gray-400 text-sm">Abierto: 02-10-2626</span>
+                </div>
+            </li>
+            <li class="flex bg-white rounded-md px-4 py-2 shadow-sm items-center hover:bg-bluegray-300">
+                <img src="./img/ticket.png" class="ring ring-blue-600 ring-offset-2 rounded-full w-16 h-16 mx-2">
+                <div class="mx-4">
+                    <p class="flex justify-between items-center"><span class="font-bold"><a href="#">Ticket #001</a></span><span class="text-sm text-blue-400 uppercase"><b>by. </b>Emilio Andere López</span></p>
+                    <p class="line-clamp-1 italic">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Assumenda ipsam doloremque dicta perspiciatis? Repellat maiores ab doloremque nesciunt animi reprehenderit delectus. Ad fugit molestias quis praesentium tenetur illo, architecto provident reiciendis molestiae? Aspernatur velit sequi, quod ipsum hic fugiat, facilis et minima recusandae nesciunt magni possimus accusamus maiores expedita? Asperiores.</p>
+                    <span class="text-gray-400 text-sm">Abierto: 02-10-2626</span>
+                </div>
+            </li>
+           
+        </ul>
+    </div>
+
+    <div class="sticky bottom-2 flex bg-bluegray-500 w-10 h-10 items-center justify-center rounded-full text-white">
+        <a href="#head"><span class="material-icons animate-bounce">&#xE5D8;</span></a> 
+    </div>
+
+{% endblock %}
