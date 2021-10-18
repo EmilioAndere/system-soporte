@@ -4,24 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "content-hash": "0ab7327966b26f7ef9027a09677a6fc7",
-=======
     "content-hash": "179162a21d787f72e219a3e24cc2e5cf",
->>>>>>> page-servicios
     "packages": [
         {
             "name": "graham-campbell/result-type",
-            "version": "v1.0.2",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GrahamCampbell/Result-Type.git",
-                "reference": "84afea85c6841deeea872f36249a206e878a5de0"
+                "reference": "296c015dc30ec4322168c5ad3ee5cc11dae827ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GrahamCampbell/Result-Type/zipball/84afea85c6841deeea872f36249a206e878a5de0",
-                "reference": "84afea85c6841deeea872f36249a206e878a5de0",
+                "url": "https://api.github.com/repos/GrahamCampbell/Result-Type/zipball/296c015dc30ec4322168c5ad3ee5cc11dae827ac",
+                "reference": "296c015dc30ec4322168c5ad3ee5cc11dae827ac",
                 "shasum": ""
             },
             "require": {
@@ -57,7 +53,7 @@
             ],
             "support": {
                 "issues": "https://github.com/GrahamCampbell/Result-Type/issues",
-                "source": "https://github.com/GrahamCampbell/Result-Type/tree/v1.0.2"
+                "source": "https://github.com/GrahamCampbell/Result-Type/tree/v1.0.3"
             },
             "funding": [
                 {
@@ -69,7 +65,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-08-28T21:34:50+00:00"
+            "time": "2021-10-17T19:48:54+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -383,8 +379,6 @@
             "time": "2021-07-28T13:41:28+00:00"
         },
         {
-<<<<<<< HEAD
-=======
             "name": "symfony/translation-contracts",
             "version": "v2.4.0",
             "source": {
@@ -584,7 +578,6 @@
             "time": "2021-08-26T07:28:06+00:00"
         },
         {
->>>>>>> page-servicios
             "name": "twig/twig",
             "version": "v3.3.3",
             "source": {
@@ -662,18 +655,6 @@
         },
         {
             "name": "vlucas/phpdotenv",
-<<<<<<< HEAD
-            "version": "v5.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/vlucas/phpdotenv.git",
-                "reference": "b3eac5c7ac896e52deab4a99068e3f4ab12d9e56"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/b3eac5c7ac896e52deab4a99068e3f4ab12d9e56",
-                "reference": "b3eac5c7ac896e52deab4a99068e3f4ab12d9e56",
-=======
             "version": "v5.3.1",
             "source": {
                 "type": "git",
@@ -684,35 +665,21 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/accaddf133651d4b5cf81a119f25296736ffc850",
                 "reference": "accaddf133651d4b5cf81a119f25296736ffc850",
->>>>>>> page-servicios
                 "shasum": ""
             },
             "require": {
                 "ext-pcre": "*",
-<<<<<<< HEAD
-                "graham-campbell/result-type": "^1.0.1",
-                "php": "^7.1.3 || ^8.0",
-                "phpoption/phpoption": "^1.7.4",
-                "symfony/polyfill-ctype": "^1.17",
-                "symfony/polyfill-mbstring": "^1.17",
-                "symfony/polyfill-php80": "^1.17"
-=======
                 "graham-campbell/result-type": "^1.0.2",
                 "php": "^7.1.3 || ^8.0",
                 "phpoption/phpoption": "^1.8",
                 "symfony/polyfill-ctype": "^1.23",
                 "symfony/polyfill-mbstring": "^1.23.1",
                 "symfony/polyfill-php80": "^1.23.1"
->>>>>>> page-servicios
             },
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.4.1",
                 "ext-filter": "*",
-<<<<<<< HEAD
-                "phpunit/phpunit": "^7.5.20 || ^8.5.14 || ^9.5.1"
-=======
                 "phpunit/phpunit": "^7.5.20 || ^8.5.21 || ^9.5.10"
->>>>>>> page-servicios
             },
             "suggest": {
                 "ext-filter": "Required to use the boolean validator."
@@ -735,21 +702,11 @@
             "authors": [
                 {
                     "name": "Graham Campbell",
-<<<<<<< HEAD
-                    "email": "graham@alt-three.com",
-                    "homepage": "https://gjcampbell.co.uk/"
-                },
-                {
-                    "name": "Vance Lucas",
-                    "email": "vance@vancelucas.com",
-                    "homepage": "https://vancelucas.com/"
-=======
                     "email": "hello@gjcampbell.co.uk"
                 },
                 {
                     "name": "Vance Lucas",
                     "email": "vance@vancelucas.com"
->>>>>>> page-servicios
                 }
             ],
             "description": "Loads environment variables from `.env` to `getenv()`, `$_ENV` and `$_SERVER` automagically.",
@@ -760,11 +717,7 @@
             ],
             "support": {
                 "issues": "https://github.com/vlucas/phpdotenv/issues",
-<<<<<<< HEAD
-                "source": "https://github.com/vlucas/phpdotenv/tree/v5.3.0"
-=======
                 "source": "https://github.com/vlucas/phpdotenv/tree/v5.3.1"
->>>>>>> page-servicios
             },
             "funding": [
                 {
@@ -776,11 +729,7 @@
                     "type": "tidelift"
                 }
             ],
-<<<<<<< HEAD
-            "time": "2021-01-20T15:23:13+00:00"
-=======
             "time": "2021-10-02T19:24:42+00:00"
->>>>>>> page-servicios
         }
     ],
     "packages-dev": [],
