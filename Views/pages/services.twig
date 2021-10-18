@@ -1,0 +1,176 @@
+{% extends '/layouts/base.twig' %}
+
+{% block title %}Servicios{% endblock %}
+
+{% block content %}
+
+    {% include './components/modals/ModalNewServ.twig' %}
+
+    <div class="sticky top-0 bg-white rounded-md p-5">
+        <h2 class="text-lg font-semibold" id="head">Servicio Tecnico</h2>
+    </div>
+
+    <div class="bg-blue-400 my-3 rounded-md font-semibold text-white py-2 px-2">
+        <h2 class="mx-10 mb-5 text-lg">Resumen de Servicios</h2>
+        <div class="flex mb-5">
+            <div class="w-1/4 border-r border-white pl-4">
+                <h4 class="text-xl">Abierto</h4>
+                <span class="text-6xl font-black">{{abierto[0].abierto}}</span>
+            </div>
+            <div class="w-1/4 border-r border-white pl-4">
+                <h4 class="text-xl">En espera</h4>
+                <span class="text-6xl font-black">{{espera[0].espera}}</span>
+            </div>
+            <div class="w-1/4 border-r border-white pl-4">
+                <h4 class="text-xl">No Asignados</h4>
+                <span class="text-6xl font-black">{{notAsign[0].total}}</span>
+            </div>
+            <div class="w-1/4 pl-4 text-orange-400">
+                <h4 class="text-xl">Importantes</h4>
+                <span class="text-6xl font-black">{{important[0].important}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex py-2 bg-blue-400 rounded-md">
+        <h2 class="mx-10 py-2 text-lg text-white font-semibold">Filtros</h2>
+            <select id="estado" class="rounded-lg mx-2">
+                <option value="all">Selecciona...</option>
+                <option>Abierto</option>
+                <option>Espera</option>
+                <option>Cerrado</option>
+            </select>
+
+            <select id="prioridad" class="rounded-lg mx-2">
+                <option value="all">Selecciona...</option>
+                <option>Alta</option>
+                <option>Media</option>
+                <option>Baja</option>
+            </select>
+        <button id="clean" class="underline text-white font-semibold">Limpiar</button>
+        <button id="filtre" class="underline text-white font-semibold mx-2">Filtrar</button>
+    </div>
+
+    <div id="new-serv" class="fixed cursor-pointer flex items-center justify-center rounded-full bottom-2 right-2 w-20 h-20 z-50 bg-blue-500 text-white">
+        <span class="material-icons">&#xEFF3;</span>
+    </div>
+
+    <div class="flex">
+        <ul id="list-services" class="w-2/4"> 
+            
+            {% for serv in services %}
+                <li class="flex bg-white rounded-md px-4 py-2 shadow-sm items-center hover:bg-bluegray-300 my-3">
+                    <img src="http://router.host/img/ticket.png" class="ring ring-blue-600 ring-offset-2 rounded-full w-16 h-16 mx-2">
+                    <div class="mx-4 w-full">
+                        <p class="flex justify-between items-center">
+                            <span class="font-bold"><a href="/get/service/{{ serv.servicio_id }}">Ticket #00{{ serv.servicio_id }}</a></span>
+                            {% if serv.usuario %}
+                                <span class="text-sm text-blue-400 uppercase"><b>by. </b>{{ serv.usuario }}</span>
+                            {% else %}
+                                <span class="text-sm text-blue-400 uppercase">Sin Asignar</span>
+                            {% endif %}
+                        </p>
+                        <p class="line-clamp-1 italic">{{ serv.descripcion }}</p>
+                        <span class="text-gray-400 text-sm">Abierto: {{ serv.fecha_solicitud }}</span>
+                    </div>
+                </li>
+            {% endfor %}
+           
+        </ul>
+
+        <div class="w-2/4 p-5">
+            <div class="bg-white rounded-lg h-screen shadow-md">
+                {% if service %}
+                    {% for servicio in service %}
+                        <div class="flex justify-center rounded-b-md bg-red-500 w-full text-white font-semibold uppercase">
+                            <span class="mx-auto text-sm">{{servicio.prioridad}}</span>
+                        </div>
+                        <div class="flex justify-center items-center py-5">
+                            <img src="http://router.host/img/ticket.png" class="ring ring-blue-600 ring-offset-2 rounded-full w-16 h-16 mx-2">
+                            <h1 class="font-bold text-4xl mx-3">Ticket #00<span id="serv">{{servicio.servicio_id}}</span></h1>
+                        </div>
+                        <div class="my-5">
+                            <div class="flex justify-between font-bold">
+                                <p class="mx-5 text-blue-500">Fecha Solicitud</p>
+                                <p class="mx-5 text-orange-500">Fecha Termino</p>
+                            </div>
+                            <div class="flex justify-between font-bold">
+                                {% if servicio.fecha_termino %}
+                                    <p class="ml-5 text-blue-500">{{servicio.fecha_solicitud}}</p>
+                                    <p class="mr-5 text-orange-500">{{servicio.fecha_termino}}</p>
+                                {% else %}
+                                    <p class="ml-5 ">{{servicio.fecha_solicitud}}</p>
+                                    <p class="mr-5 ">Pendiente</p>
+                                {% endif %}
+                            </div>
+                        <div>
+                        <div class="m-5 text-justify">
+                            <h4 class="text-lg font-semibold text-center my-5">{{servicio.servicio}}</h4>
+                            <ul class="my-3">
+                                <li class="flex my-2 text-gray-500 font-bold"><span class="material-icons mr-3">&#xE326;</span>{{servicio.equipo}}</li>
+                                <li class="flex items-center text-gray-500 font-bold">
+                                    <span class="material-icons mr-3">&#xf0E2;</span>
+                                    {% if servicio.usuario %}
+                                        {{servicio.usuario}}
+                                        {% if servicio.estado != 'Cerrado' %}
+                                            <button id="btn-asign" class="ml-2 flex items-center justify-center w-10 h-10 rounded-full text-white bg-blue-700"><span class="material-icons">&#xE2E7;</span></button>
+                                        {% endif %}
+                                    {% else %}
+                                        Sin Asignar 
+                                        {% if servicio.estado != 'Cerrado' %}
+                                            <button id="btn-asign" class="ml-2 flex items-center justify-center w-10 h-10 rounded-full text-white bg-blue-700"><span class="material-icons">&#xE7FE;</span></button>
+                                        {% endif %}
+                                    {% endif %}
+                                </li>
+                            </ul>
+                            <p>{{ servicio.descripcion }}</p>
+                            {% if servicio.estado == 'Espera' %}
+                                <p class="font-bold italic ">En espera por: {{ dias }}</p>
+                            {% endif %}
+                        </div>
+                        {% if servicio.estado != 'Cerrado' %}
+                            {% if servicio.usuario %}
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="text-xs mx-2">Abierto</span>
+                                        <div id="switch" class="flex rounded-full p-1 w-10 {% if servicio.estado == 'Abierto' or  servicio.estado == 'Espera' %}bg-green-500 justify-start{% else %}bg-red-500 justify-end{% endif %} ">
+                                            <div id="sw-btn" class="transition duration-500 ease-in-out w-5 h-5 shadow-lg bg-white rounded-full"></div>
+                                        </div>
+                                        <span class="text-xs mx-2">Terminado</span>
+                                    </div>
+                                    <label id="check" class="mr-5 flex items-center {% if servicio.estado == 'Cerrado' %} hidden {% endif %}"><input type="checkbox" id="ch-espera" value="" class="mr-2" {% if servicio.estado == 'Espera' %} checked {% endif %}> En espera</label>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <p class="text-8xl font-bold transform -translate-y-32 -rotate-45 opacity-25 text-center">Cerrado</p>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <div class="flex items-center justify-center h-full">
+                        <p class="text-2xl text-center">Selecciona algun Servicio<br> para ver mas<p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div id="list-users" class="hidden fixed bottom-0 left-0 z-30 bg-blue-500 shadow-2xl w-full h-60 rounded-t-lg p-5">
+        <div class="bg-white h-full rounded-lg">
+            <ul id="users"></ul>
+        </div>
+    <div>
+
+    
+    
+    {# <div class="sticky bottom-2 flex bg-bluegray-500 w-10 h-10 items-center justify-center rounded-full text-white">
+        <a href="#head"><span class="material-icons animate-bounce">&#xE5D8;</span></a> 
+    </div> #}
+
+{% endblock %}
+
+{% block scripts %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="http://router.host/js/services.js"></script>
+
+{% endblock %}

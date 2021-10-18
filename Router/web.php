@@ -8,14 +8,21 @@ use App\Controllers\EquipoController;
 use App\Controllers\MarcaController;
 use App\Controllers\RamController;
 use App\Controllers\SedeController;
+use App\Controllers\ServicesController;
 use App\Controllers\UbicacionController;
+use App\Controllers\UsuarioController;
 use App\Controllers\ViewsController;
 
 $router->get("/", [ViewsController::class, "dash"]);
-$router->get("/devices", [ViewsController::class, "devices"]);
+$router->get('/devices', [ViewsController::class, "devices"]);
+$router->get('/services', [ServicesController::class, "index"]);
+$router->get('/get/service/:id', [ServicesController::class, 'service']);
+$router->get('/get/users', [UsuarioController::class, 'index']);
 $router->get('/stock', [EquipoController::class, 'inStock']);
-
+$router->get('/filter/serv/:state/:priori', [ServicesController::class, 'filter']);
+    
 $router->post('/device', [EquipoController::class, 'add']);
+$router->post('/services', [ServicesController::class, 'add']);
 
 $router->group('/get', [
     ['/devices', [EquipoController::class, 'index'], 'get'],
@@ -42,5 +49,7 @@ $router->group('/del', [
 
 $router->group('/up', [
     ['/equipo/:id', [EquipoController::class, 'update'], 'post'],
-    ['/change/:id', [EquipoController::class, 'changeEmp'], 'post']
+    ['/change/:id', [EquipoController::class, 'changeEmp'], 'post'],
+    ['/change/state/:id', [ServicesController::class, 'changeState'], 'post'],
+    ['/change/support/:id', [ServicesController::class, 'changeUser'], 'post'],
 ]);

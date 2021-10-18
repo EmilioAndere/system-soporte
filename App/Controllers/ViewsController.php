@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Services;
 use Config\Controller;
 
 class ViewsController extends Controller{
@@ -13,7 +14,11 @@ class ViewsController extends Controller{
 
     public function devices(){
         $uri = $this->uri;
-        echo $this->tmp->render('/pages/devices/device.twig', compact('uri'));
+        echo $this->tmp->render('/pages/device.twig', compact('uri'));
+    }
+
+    public function services(){
+        
     }
 
 }

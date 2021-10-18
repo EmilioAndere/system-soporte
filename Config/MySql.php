@@ -68,6 +68,15 @@ class MySql extends Connection implements IQueryBuilder{
         return $this;
     }
 
+    public function leftJoin(string $table, string $field_1, string $field_2): IQueryBuilder{
+        if(!in_array($this->query->type, ['select'])){
+            throw new Exception("Error Processing Request", 1);
+        }
+        $this->query->left[] = "$table ON $field_1 = $field_2";
+
+        return $this;
+    }
+
     public function limit(int $start, int $offset): IQueryBuilder
     {
         if(!in_array($this->query->type, ['select'])){
@@ -89,6 +98,9 @@ class MySql extends Connection implements IQueryBuilder{
         $sql = $this->query->base;
         if(isset($query->inner)){
             $sql .= " INNER JOIN ".implode(' INNER JOIN ', $query->inner);
+        }
+        if(isset($query->left)){
+            $sql .= " LEFT JOIN ".implode(' LEFT JOIN ', $query->left);
         }
         if(!empty($query->where)){
             if(str_contains($sql, 'WHERE')){
