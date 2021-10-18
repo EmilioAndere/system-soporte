@@ -71,12 +71,17 @@ class Model extends MySql{
             }
         }
         $query .= $values;
-        $query = substr($query, 0, -2)." WHERE ".substr($table, 0, -2)."_id = ".$id;
+        $wh = isset($this->primary) ? $this->primary." = " : substr($table, 0, -2)."_id = ";
+        $query = substr($query, 0, -2)." WHERE ".$wh.$id;
         return $query;
     }
 
     public function save(){
-        $field_id = substr($this->getTable(), 0, -2)."_id";
+        if(isset($this->primary)){
+            $field_id = $this->primary;
+        }else{
+            $field_id = substr($this->getTable(), 0, -2)."_id";
+        }
         if(isset($this->data[$field_id]) && $this->data[$field_id] != 0){
             $sql = $this->getUpdate($this->data[$field_id]);
         }else{

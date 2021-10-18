@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Services;
 use Config\Controller;
 
 class ViewsController extends Controller{
@@ -17,8 +18,7 @@ class ViewsController extends Controller{
     }
 
     public function services(){
-        $uri = $this->uri;
-        echo $this->tmp->render('/pages/services.twig', compact('uri'));
+        
     }
 
 }
