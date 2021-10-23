@@ -9,47 +9,57 @@ use DateTime;
 class ServicesController extends Controller{
 
     public function index(){
-        $servicios = new Services();
-        $services = $servicios->select('servicio_equipo', ['servicio_equipo.*', 'usuarios.nombre as usuario'])
-        ->leftJoin('usuarios', 'usuarios.usuario_id', 'servicio_equipo.usuario_id')->exec();
+        if($this->logged()){
+            $servicios = new Services();
+            $services = $this->isAdmin($servicios->select('servicio_equipo', ['servicio_equipo.*', 'usuarios.nombre as usuario'])
+            ->leftJoin('usuarios', 'usuarios.usuario_id', 'servicio_equipo.usuario_id'));
+    
+            $abierto = $this->isAdmin($servicios->select('servicio_equipo', ['count(*) as abierto'])->where('servicio_equipo.estado', 'Abierto'));
+            $espera = $this->isAdmin($servicios->select('servicio_equipo', ['count(*) as espera'])->where('estado', 'Espera'));
+            $notAsign = $this->isAdmin($servicios->select('servicio_equipo', ['count(*) as total'])->isNull('usuario_id'));
+            $important = $this->isAdmin($servicios->select('servicio_equipo', ['count(*) as important'])->where('prioridad', 'Alta'));
+            $uri = $this->uri;
 
-        $abierto = $servicios->select('servicio_equipo', ['count(*) as abierto'])->where('estado', 'Abierto')->exec();
-        $espera = $servicios->select('servicio_equipo', ['count(*) as espera'])->where('estado', 'Espera')->exec();
-        $notAsign = $servicios->select('servicio_equipo', ['count(*) as total'])->isNull('usuario_id')->exec();
-        $important = $servicios->select('servicio_equipo', ['count(*) as important'])->where('prioridad', 'Alta')->exec();
-
-        $uri = $this->uri;
-        echo $this->tmp->render('/pages/services.twig', compact('uri', 'services', 'abierto', 'espera', 'notAsign', 'important'));
+            echo $this->tmp->render('/pages/services.twig', compact('uri', 'services', 'abierto', 'espera', 'notAsign', 'important'));
+        }else{
+            header('location: /login');
+        }
     }
 
     public function service($id){
-        $servicio = new Services();
-        $service = $servicio->select('servicio_equipo', [
-            'servicio_equipo.*',
-            'equipos.nombre as equipo',
-            'usuarios.nombre as usuario'
-        ])
-        ->join('equipos', 'equipos.equipo_id', 'servicio_equipo.equipo_id')
-        ->leftJoin('usuarios', 'usuarios.usuario_id', 'servicio_equipo.usuario_id')
-        ->where('servicio_id', $id)->exec();
-        $services = $servicio->select('servicio_equipo', ['servicio_equipo.*', 'usuarios.nombre as usuario'])
-        ->leftJoin('usuarios', 'usuarios.usuario_id', 'servicio_equipo.usuario_id')->exec();
-        $uri = $this->uri;
+        if($this->logged()){
+            $servicio = new Services();
+            $service = $servicio->select('servicio_equipo', [
+                'servicio_equipo.*',
+                'equipos.nombre as equipo',
+                'usuarios.nombre as usuario'
+            ])
+            ->join('equipos', 'equipos.equipo_id', 'servicio_equipo.equipo_id')
+            ->leftJoin('usuarios', 'usuarios.usuario_id', 'servicio_equipo.usuario_id')
+            ->where('servicio_id', $id)->exec();
+            
+            $services = $this->isAdmin($servicio->select('servicio_equipo', ['servicio_equipo.*', 'usuarios.nombre as usuario'])
+            ->leftJoin('usuarios', 'usuarios.usuario_id', 'servicio_equipo.usuario_id'));
 
-        $abierto = $servicio->select('servicio_equipo', ['count(*) as abierto'])->where('estado', 'Abierto')->exec();
-        $espera = $servicio->select('servicio_equipo', ['count(*) as espera'])->where('estado', 'Espera')->exec();
-        $notAsign = $servicio->select('servicio_equipo', ['count(*) as total'])->isNull('usuario_id')->exec();
-        $important = $servicio->select('servicio_equipo', ['count(*) as important'])->where('prioridad', 'Alta')->isNull('fecha_termino')->exec();
 
-        $date = new DateTime();
-        $solicitud = new DateTime($service[0]['fecha_solicitud']);
-        $diff = $solicitud->diff($date);
-        if($diff->days != 0){
-            $dias = $diff->days." Dias.";
+            $abierto = $this->isAdmin($servicio->select('servicio_equipo', ['count(*) as abierto'])->where('estado', 'Abierto'));
+            $espera = $this->isAdmin($servicio->select('servicio_equipo', ['count(*) as espera'])->where('estado', 'Espera'));
+            $notAsign = $this->isAdmin($servicio->select('servicio_equipo', ['count(*) as total'])->isNull('usuario_id'));
+            $important = $this->isAdmin($servicio->select('servicio_equipo', ['count(*) as important'])->where('prioridad', 'Alta')->isNull('fecha_termino'));
+            $uri = $this->uri;
+
+            $date = new DateTime();
+            $solicitud = new DateTime($service[0]['fecha_solicitud']);
+            $diff = $solicitud->diff($date);
+            if($diff->days != 0){
+                $dias = $diff->days." Dias.";
+            }else{
+                $dias = $diff->h." Horas.";
+            }
+            echo $this->tmp->render('/pages/services.twig', compact('uri', 'service', 'services', 'dias', 'abierto', 'espera', 'notAsign', 'important'));
         }else{
-            $dias = $diff->h." Horas.";
+            $this->redirect('/login');
         }
-        echo $this->tmp->render('/pages/services.twig', compact('uri', 'service', 'services', 'dias', 'abierto', 'espera', 'notAsign', 'important'));
         
     }
 
@@ -70,6 +80,14 @@ class ServicesController extends Controller{
         $service->save();
     }
 
+    public function openService($id){
+        $service = new Services();
+        $service->servicio_id = $id;
+        $service->estado = 'Abierto';
+        $service->fecha_termino = 'NULL';
+        $service->save();
+    }
+
     public function filter($estado, $prioridad){
         $servicios = new Services();
         $serv = $servicios->select('servicio_equipo', ['servicio_equipo.*', 'usuarios.nombre as usuario'])
@@ -83,12 +101,12 @@ class ServicesController extends Controller{
             $serv = $serv->where('servicio_equipo.prioridad', $prioridad);
         }
 
-        $services = $serv->exec();
+        $services = $this->isAdmin($serv);
 
-        $abierto = $servicios->select('servicio_equipo', ['count(*) as abierto'])->where('estado', 'Abierto')->exec();
-        $espera = $servicios->select('servicio_equipo', ['count(*) as espera'])->where('estado', 'Espera')->exec();
-        $notAsign = $servicios->select('servicio_equipo', ['count(*) as total'])->isNull('usuario_id')->exec();
-        $important = $servicios->select('servicio_equipo', ['count(*) as important'])->where('prioridad', 'Alta')->exec();
+        $abierto = $this->isAdmin($servicios->select('servicio_equipo', ['count(*) as abierto'])->where('estado', 'Abierto'));
+        $espera = $this->isAdmin($servicios->select('servicio_equipo', ['count(*) as espera'])->where('estado', 'Espera'));
+        $notAsign = $this->isAdmin($servicios->select('servicio_equipo', ['count(*) as total'])->isNull('usuario_id'));
+        $important = $this->isAdmin($servicios->select('servicio_equipo', ['count(*) as important'])->where('prioridad', 'Alta'));
 
         $uri = $this->uri;
         echo $this->tmp->render('/pages/services.twig', compact('uri', 'services', 'abierto', 'espera', 'notAsign', 'important'));
@@ -102,7 +120,31 @@ class ServicesController extends Controller{
         $servicio->estado = $_POST['estado'];
         $servicio->fecha_solicitud = $_POST['fecha'];
         $servicio->equipo_id = $_POST['equipo'];
-        $servicio->usuario_id = $_POST['user'];
+        $servicio->usuario_id = ($_COOKIE['user'] == 'Administrador') ? $_POST['user'] : $_COOKIE['id_t'];
         $servicio->save();
+    }
+
+    public function grafs(){
+        $services = new Services();
+        $news = $this->isAdmin($services->select('servicio_equipo', ['count(*) as total'])->where('fecha_solicitud', date('Y-m-d')));
+        $pend = $this->isAdmin($services->select('servicio_equipo', ['count(*) as total'])->where('estado', 'Espera'));
+        // $grafCase = array(]);
+
+        $this->json(['nuevos' => $news[0]['total'], 'pendient' => $pend[0]['total']]);
+    }
+
+    public function grafPrior(){
+        $services = new Services();
+        $low = $this->isAdmin($services->select('servicio_equipo', ['count(*) as total'])
+        ->where('prioridad', 'Baja')
+        ->where('fecha_solicitud', date('Y')."-".date('m')."-01' AND '".date('Y')."-".date('m')."-30", 'BETWEEN'));
+        $med = $this->isAdmin($services->select('servicio_equipo', ['count(*) as total'])
+        ->where('prioridad', 'Media')
+        ->where('fecha_solicitud', date('Y')."-".date('m')."-01' AND '".date('Y')."-".date('m')."-30", 'BETWEEN'));
+        $high = $this->isAdmin($services->select('servicio_equipo', ['count(*) as total'])
+        ->where('prioridad', 'Alta')
+        ->where('fecha_solicitud', date('Y')."-".date('m')."-01' AND '".date('Y')."-".date('m')."-30", 'BETWEEN'));
+        // echo $low;
+        $this->json(['low' => $low[0]['total'], 'med' => $med[0]['total'], 'high' => $high[0]['total'], 'mes' => date('F')]);
     }
 }

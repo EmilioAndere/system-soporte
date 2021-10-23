@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Sede;
+use Config\Request;
 use Config\Controller;
 
 class SedeController extends Controller{
@@ -12,11 +13,26 @@ class SedeController extends Controller{
         $this->json($sedes);
     }
 
-    public function find($id){
-        $sede = new Sede();
-        $sede = $sede->select('sede')
-        ->where('sede_id', $id)->exec();
+    public function show($id){
+        $sede = Sede::find($id);
         $this->json($sede);
+    }
+
+    public function insert(Request $req){
+        $sede = new Sede();
+        $sede->nombre = $req->getBody()->nombre;
+        $sede->save();
+    }
+
+    public function update(Request $req){
+        $sede = new Sede();
+        $sede->sede_id = $req->getBody()->id;
+        $sede->nombre = $req->getBody()->nombre;
+        $sede->save();
+    }
+
+    public function destroy($id){
+        Sede::delete($id);
     }
 
 }

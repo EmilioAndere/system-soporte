@@ -2,6 +2,8 @@
 
 namespace Config;
 
+use Exception;
+
 class Router{
 
     private $basePath;
@@ -31,6 +33,14 @@ class Router{
         $this->routes[] = new Matcher($expr, $callback, "POST");
     }
 
+    public function delete($expr, $callback){
+        $this->routes[] = new Matcher($expr, $callback, "DELETE");
+    }
+
+    public function put($expr, $callback){
+        $this->routes[] = new Matcher($expr, $callback, "PUT");
+    }
+
     public function group($expr, $group){
         foreach ($group as $route) {
             if($route[0] == "/"){
@@ -38,12 +48,11 @@ class Router{
             }
             $this->{$route[2]}($expr.$route[0], $route[1]);
         }
-    }   
+    }
 
     public function redirect($from_path, $to_path, $code = 302){
         $this->all($from_path, function () use ($to_path, $code) {
             http_response_code($code);
-            // echo $to_path;
             header("Location: {$to_path}");
         });
     }
@@ -54,5 +63,6 @@ class Router{
                 return $route->exec();
             }
         }
+        throw new Exception('La ruta no existe');
     }
 }

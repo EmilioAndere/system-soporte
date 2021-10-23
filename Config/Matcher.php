@@ -57,6 +57,16 @@ class Matcher{
         if(is_array($this->callback)){
             $this->callback[0] = new $this->callback[0]();
         }
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $req = new Request();
+            array_push($this->match, $req);
+        }
+
+        if($_SERVER['REQUEST_METHOD'] == 'PUT'){
+            $datos = json_decode(file_get_contents('php://input'), true);
+            $req = new Request($datos);
+            array_push($this->match, $req);
+        }
         return call_user_func_array($this->callback, array_slice($this->match, 1));
     }
 

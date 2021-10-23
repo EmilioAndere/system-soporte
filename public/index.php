@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set("America/Mexico_City");
 define("DS", "/");
 
 require '../vendor/autoload.php';
@@ -14,5 +14,10 @@ $env->load();
 use Config\Router;
 
 $router = new Router();
-require_once './../Router/web.php';
-$router ->run();
+require_once './../Router/api.php';
+
+try {
+    $router ->run();
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
