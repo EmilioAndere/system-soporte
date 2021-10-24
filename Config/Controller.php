@@ -12,4 +12,12 @@ class Controller{
         echo json_encode($data);
     }
 
+    public function exist($var){
+        if(isset($var)){
+            return $var;
+        }
+
+        return null;
+    }
+
 }

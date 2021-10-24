@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Empleado;
 use Config\Controller;
+use Config\Request;
 
 class EmpleadoController extends Controller{
 
@@ -12,20 +13,38 @@ class EmpleadoController extends Controller{
         $this->json($empleados);
     }
 
-    public function find($id){
-        $empleado = new Empleado();
-        $empleado = $empleado->select('empleados')
-        ->where('empleado_id', $id)->exec();
+    public function show($id){
+        $empleado = Empleado::find($id);
         $this->json($empleado);
     }
 
-    public function search($val){
-        $search = new Empleado();
-        $result = $search->select('empleados', ['empleado_id', 'nombre', 'puesto'])
-        ->orWhere('nombre', "%$val%", 'LIKE')
-        ->orWhere('puesto', "%$val%", 'LIKE')
-        ->orWhere('empleado_id', "%$val%", 'LIKE')->exec();
-        $this->json($result);
+    public function insert(Request $req){
+        $empleado = new Empleado();
+        $empleado->nombre = $req->getBody()->nombre;
+        $empleado->telefono = $req->getBody()->telefono;
+        $empleado->mail = $req->getBody()->mail;
+        $empleado->puesto = $req->getBody()->puesto;
+        $empleado->imagen = $req->getBody()->imagen;
+        $empleado->ubicacion_id = $req->getBody()->ubicacion_id;
+        $empleado->sede_id = $req->getBody()->sede_id;
+        $empleado->save();
+    }
+
+    public function update(Request $req){
+        $empleado = new Empleado();
+        $empleado->empleado_id = $req->getBody()->id;
+        $empleado->nombre = $req->getBody()->nombre;
+        $empleado->telefono = $req->getBody()->telefono;
+        $empleado->mail = $req->getBody()->mail;
+        $empleado->puesto = $req->getBody()->puesto;
+        $empleado->imagen = $req->getBody()->imagen;
+        $empleado->ubicacion_id = $req->getBody()->ubicacion_id;
+        $empleado->sede_id = $req->getBody()->sede_id;
+        $empleado->save();
+    }
+
+    public function destroy($id){
+        Empleado::delete($id);
     }
  
 }
