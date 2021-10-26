@@ -17,7 +17,7 @@ class Controller{
             return $var;
         }
 
-        return null;
+        return 'NULL';
     }
 
 }

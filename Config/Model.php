@@ -81,7 +81,7 @@ class Model extends MySql{
             $vals = array();
             foreach ($this->data as $key => $value) {
                     array_push($keys, $key);
-                    array_push($vals, "'".$value."'");
+                    ($value == 'NULL') ? array_push($vals, $value) : array_push($vals, "'".$value."'");
             }
             $data = implode(',', $this->params);
             $sql = "INSERT INTO $table ( ".implode(',', $keys)." ) VALUES ( ".implode(',', $vals)." )";

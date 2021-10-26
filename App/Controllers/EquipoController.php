@@ -31,6 +31,7 @@ class EquipoController extends Controller{
         $equipo->disco_id = $this->exist($req->getBody()->disco_id);
         $equipo->pantalla_id = $this->exist($req->getBody()->pantalla_id);
         $equipo->empleado_id = $this->exist($req->getBody()->empleado_id);
+        $equipo->save();
     }
 
     public function update(Request $req){
@@ -47,6 +48,7 @@ class EquipoController extends Controller{
         $equipo->disco_id = $this->exist($req->getBody()->disco_id);
         $equipo->pantalla_id = $this->exist($req->getBody()->pantalla_id);
         $equipo->empleado_id = $this->exist($req->getBody()->empleado_id);
+        $equipo->save();
     }
 
     public function destroy($id){
