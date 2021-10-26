@@ -21,7 +21,7 @@ class ServicesController extends Controller{
     public function insert(Request $req){
         $servicio = new Services();
         $servicio->descripcion = $req->getBody()->descripcion;
-        $servicio->servicio = $req->getBody()->servcio;
+        $servicio->servicio = $req->getBody()->servicio;
         $servicio->prioridad = $req->getBody()->prioridad;
         $servicio->estado = $req->getBody()->estado;
         $servicio->fecha_solicitud = $req->getBody()->solicitud;
@@ -35,7 +35,7 @@ class ServicesController extends Controller{
         $servicio = new Services();
         $servicio->servicio_id = $req->getBody()->id; 
         $servicio->descripcion = $req->getBody()->descripcion;
-        $servicio->servicio = $req->getBody()->servcio;
+        $servicio->servicio = $req->getBody()->servicio;
         $servicio->prioridad = $req->getBody()->prioridad;
         $servicio->estado = $req->getBody()->estado;
         $servicio->fecha_solicitud = $req->getBody()->solicitud;
