@@ -28,6 +28,7 @@ class ServicesController extends Controller{
         $servicio->fecha_termino = $req->getBody()->termino;
         $servicio->equipo_id = $req->getBody()->equipo_id;
         $servicio->usuario_id = $req->getBody()->usuario_id;
+        $servicio->save();
     }
 
     public function update(Request $req){
@@ -41,6 +42,7 @@ class ServicesController extends Controller{
         $servicio->fecha_termino = $req->getBody()->termino;
         $servicio->equipo_id = $req->getBody()->equipo_id;
         $servicio->usuario_id = $req->getBody()->usuario_id;
+        $servicio->save();
     }
 
     public function destroy($id){
