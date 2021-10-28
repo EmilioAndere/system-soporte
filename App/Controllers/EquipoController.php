@@ -9,45 +9,55 @@ use Config\Controller;
 class EquipoController extends Controller{
 
     public function index(){
+        $equipos = new Equipo();
+        $results = $equipos->select('equipos', [
+            'equipos.num_serie',
+            'equipos.compra',
+            'concat("Est. ", equipos.estacion) as estacion',
+            'equipos.especificaciones',
+            'equipos.tipo as tipo',
+            'sede.nombre as sede'
+        ])
+        ->join('sede', 'equipos.id_sede', 'sede.ID')->exec();
+        $this->json($results);
+    }
+
+    public function all(){
         $equipos = Equipo::all();
         $this->json($equipos);
     }
 
-    public function show($id){
-        $equipo = Equipo::find($id);
-        $this->json($equipo);
+    public function show($val, $param = null){
+        if(is_null($param)){
+            $equipo = Equipo::find($val);
+            $this->json($equipo);
+        }else{
+            $equipo = new Equipo();
+            $result = $equipo->select('equipos')->where($param, $val)->exec();
+            $this->json($result);
+        }
     }
 
     public function insert(Request $req){
         $equipo = new Equipo();
-        $equipo->nombre = $req->getBody()->nombre;
-        $equipo->serial = $req->getBody()->serial;
-        $equipo->ip_equipo = $req->getBody()->ip_equipo;
-        $equipo->licencia = $req->getBody()->licencia;
-        $equipo->fecha_compra = $req->getBody()->fecha_compra;
-        $equipo->marca_id = $req->getBody()->marca_id;
-        $equipo->categoria_id = $req->getBody()->categoria_id;
-        $equipo->ram_id = $this->exist($req->getBody()->ram_id);
-        $equipo->disco_id = $this->exist($req->getBody()->disco_id);
-        $equipo->pantalla_id = $this->exist($req->getBody()->pantalla_id);
-        $equipo->empleado_id = $this->exist($req->getBody()->empleado_id);
+        $equipo->num_serie = $req->getBody()->serial;
+        $equipo->compra = $req->getBody()->compra;
+        $equipo->estacion = $req->getBody()->estacion;
+        $equipo->especificaciones = $req->getBody()->especificaciones;
+        $equipo->tipo = $req->getBody()->tipo;
+        $equipo->id_sede = $req->getBody()->sede;
         $equipo->save();
     }
 
     public function update(Request $req){
         $equipo = new Equipo();
-        $equipo->equipo_id = $req->getBody()->id;
-        $equipo->nombre = $req->getBody()->nombre;
-        $equipo->serial = $req->getBody()->serial;
-        $equipo->ip_equipo = $req->getBody()->ip_equipo;
-        $equipo->licencia = $req->getBody()->licencia;
-        $equipo->fecha_compra = $req->getBody()->fecha_compra;
-        $equipo->marca_id = $req->getBody()->marca_id;
-        $equipo->categoria_id = $req->getBody()->categoria_id;
-        $equipo->ram_id = $this->exist($req->getBody()->ram_id);
-        $equipo->disco_id = $this->exist($req->getBody()->disco_id);
-        $equipo->pantalla_id = $this->exist($req->getBody()->pantalla_id);
-        $equipo->empleado_id = $this->exist($req->getBody()->empleado_id);
+        $equipo->ID = $req->getBody()->id;
+        $equipo->num_serie = $req->getBody()->serial;
+        $equipo->compra = $req->getBody()->compra;
+        $equipo->estacion = $req->getBody()->estacion;
+        $equipo->especificaciones = $req->getBody()->especificaciones;
+        $equipo->tipo = $req->getBody()->tipo;
+        $equipo->id_sede = $req->getBody()->sede;
         $equipo->save();
     }
 

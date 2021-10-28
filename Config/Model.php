@@ -25,6 +25,16 @@ class Model extends MySql{
         }
     }
 
+    public function __isset($name)
+    {
+        return isset($this->data[$name]);
+    }
+
+    public function __unset($name)
+    {
+        unset($this->data[$name]);
+    }
+
     public static function find($value){
         $class = get_called_class();
         $instance = new $class();
@@ -62,12 +72,29 @@ class Model extends MySql{
         return $error;
     }
 
+    private function unsetParams(){
+        foreach ($this->data as $key => $value) {
+            if(is_null($value)){
+                unset($this->data[$key]);
+            }
+        }
+    }
+
+    private function exist_nullParams(){
+        foreach ($this->data as $key => $value) {
+            if(is_null($value)){
+                throw new Exception("Hay un error al enviar los datos");
+            }
+        }
+    }
+
     public function save(){
         $table = isset($this->table) ? $this->table : strtolower(explode('\\', get_called_class())[2]."s");
         $field_id = isset($this->primary) ? $this->primary : "id";
         
 
         if(isset($this->data[$field_id]) && $this->data[$field_id] != 0){
+            $this->unsetParams();
             foreach ($this->data as $key => $value) {
                 if($key != $field_id)
                     array_push($this->params, $key." = '".$value."'");
@@ -77,6 +104,7 @@ class Model extends MySql{
             $sql = "UPDATE $table SET $data WHERE $field_id = $id";
             $resp = "affected_cols";
         }else{
+            $this->exist_nullParams();
             $keys = array();
             $vals = array();
             foreach ($this->data as $key => $value) {
@@ -92,7 +120,7 @@ class Model extends MySql{
             $rows = $this->exeIns($sql);
             echo json_encode([$resp => $rows]);
         } catch (Exception $e) {
-            echo $e->getMessage();
+            echo json_encode(['error' => $e->getMessage()]);
         }
     }
 
@@ -114,7 +142,5 @@ class Model extends MySql{
         }
         
     }
-
-    
 
 }

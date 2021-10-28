@@ -22,13 +22,13 @@ class AplicacionController extends Controller{
         $aplicacion = new Aplicacion();
         $aplicacion->nombre = $req->getBody()->nombre;
         $aplicacion->version = $req->getBody()->version;
-        $aplicacion->fecha_compra = $req->getBody()->compra;
+        $aplicacion->fec_compra = $req->getBody()->compra;
         $aplicacion->save();
     }
 
     public function update(Request $req){
         $aplicacion = new Aplicacion();
-        $aplicacion->aplicacion_id = $req->getBody()->id;
+        $aplicacion->ID = $req->getBody()->id;
         $aplicacion->nombre = $req->getBody()->nombre;
         $aplicacion->version = $req->getBody()->version;
         $aplicacion->fecha_compra = $req->getBody()->compra;
