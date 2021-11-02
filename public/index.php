@@ -16,7 +16,7 @@ use Config\Router;
 $router = new Router();
 require_once './../Router/api.php';
 
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: http://localhost");
 try {
     $router ->run();
 } catch (Exception $e) {
